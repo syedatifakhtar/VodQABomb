@@ -3,7 +3,7 @@
 # ~~~~
 
 
-GET /users   com.thoughtworks.vodqa.Controller.VodQAController.listUsers()
+GET /users   com.thoughtworks.vodqa.Controller.VodQAController.listUsers(employer: Option[String],location: Option[String])
 GET /users/:id   com.thoughtworks.vodqa.Controller.VodQAController.getUser(id: Int)
 POST /users   com.thoughtworks.vodqa.Controller.VodQAController.addUsers()
 PUT /users com.thoughtworks.vodqa.Controller.VodQAController.putUser()
