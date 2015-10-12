@@ -1,0 +1,10 @@
+tags
+.*.swp
+.*.swo
+*.iml
+*.ipr
+*.iws
+.idea
+out
+target
+*.class
