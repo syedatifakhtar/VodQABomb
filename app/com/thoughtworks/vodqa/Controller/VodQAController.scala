@@ -2,9 +2,11 @@ package com.thoughtworks.vodqa.Controller
 
 import play.api.libs.json._
 
-case class User (val userId: Option[Int],val userName: String,val employer: String,val location: String)
+case class Location(state: String,city: String)
+case class User (val userId: Option[Int],val userName: String,val employer: String,val location: Location)
 
 object User{
+  implicit val locationFormat = Json.format[Location]
   implicit val userFormat = Json.format[User]
 }
 import play.api.mvc.{Action, Controller}
@@ -12,11 +14,11 @@ import play.api.mvc.{Action, Controller}
 object VodQAController extends Controller{
 
   var listOfUsers = Map[Int,User](
-   1-> User(Some(1),"Robert","facebook","California"),
-  2->User(Some(2) ," Aaron","Twitter","Irvine"),
-  3->User(Some(3) ," Michael","Google","New York"),
-  4 -> User(Some(4), " Dan", "Yahoo", "Atlanta"),
-  5->User(Some(5) ," Steve","ThoughtWorks","Chicago"))
+   1-> User(Some(1),"Robert","facebook",Location("California","San Jose")),
+  2->User(Some(2) ,"Aaron","Twitter",Location("New York","New York")),
+  3->User(Some(3) ,"Michael","Google",Location("California","Palo Alto")),
+  4 -> User(Some(4), "Dan", "Yahoo", Location("California","Mountain View")),
+  5->User(Some(5) ,"Steve","ThoughtWorks",Location("California","San Francisco")))
 
   var count: Int = 5
 
@@ -31,7 +33,7 @@ object VodQAController extends Controller{
             .map(_.equals(user.location))
             .getOrElse(true)
       }
-      Ok(Json.toJson(filteredUsers)).withHeaders("Content-Type"->"application/json")
+      Ok(Json.toJson(filteredUsers.toList.sortBy(_.userId))).withHeaders("Content-Type"->"application/json")
   }
 
   def getUser(userId: Int) = Action{
